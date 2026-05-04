@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Buddy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <img src="img/logo.png" alt="Travel Buddy Logo" class="logo">
+            <div class="title-container">
+                <h1>Travel Buddy</h1>
+                <p class="tagline">Supporting our Indian globe-trotters</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div id="page-login" class="view active">
+            <div class="card login-card">
+                <h2>Welcome!</h2>
+                <p>Please log in to access the Travel Buddy network.</p>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email Address:</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Log In</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="page-dashboard" class="view">
+            <h2>Namaste!</h2>
+            <div class="dashboard-grid">
+                <button class="btn-dashboard" onclick="goToPage('page-create')">
+                    <h3>➕ Enter Traveler Details</h3>
+                    <p>Post a new trip</p>
+                </button>
+                <button class="btn-dashboard" onclick="goToPage('page-search')">
+                    <h3>🔍 Search Travelers</h3>
+                    <p>Find a buddy</p>
+                </button>
+            </div>
+            <button class="btn-secondary" onclick="goToPage('page-login')">Log Out</button>
+        </div>
+
+        <div id="page-create" class="view">
+            <button class="btn-secondary nav-back" onclick="goToPage('page-dashboard')">⬅ Back to Menu</button>
+            <h2>Enter Traveler Details</h2>
+            
+            <form class="card" onsubmit="submitEntryForm(event)">
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label>First Name:</label>
+                        <input type="text" id="entry-fname" required>
+                    </div>
+                    <div class="form-group half">
+                        <label>Surname:</label>
+                        <input type="text" id="entry-lname" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label>Origin (Code):</label>
+                        <input type="text" id="entry-origin" placeholder="e.g., BOM" maxlength="3" required>
+                    </div>
+                    <div class="form-group half">
+                        <label>Destination (Code):</label>
+                        <input type="text" id="entry-dest" placeholder="e.g., LHR" maxlength="3" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Airlines:</label>
+                    <input type="text" id="entry-airline" placeholder="e.g., Air India" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group third">
+                        <label>Date:</label>
+                        <input type="date" id="entry-date" required>
+                    </div>
+                    <div class="form-group third">
+                        <label>Time:</label>
+                        <input type="time" required>
+                    </div>
+                    <div class="form-group third">
+                        <label>Flight No:</label>
+                        <input type="text" placeholder="e.g., AI 101" required>
+                    </div>
+                </div>
+                <p class="privacy-note">🔒 Exact flight numbers are hidden from public search.</p>
+                <button type="submit" class="btn-primary">Save to Database</button>
+            </form>
+        </div>
+
+        <div id="page-search" class="view">
+            <button class="btn-secondary nav-back" onclick="goToPage('page-dashboard')">⬅ Back to Menu</button>
+            <h2>Find a Travel Buddy</h2>
+            
+            <form class="card search-box" onsubmit="performSearch(event)">
+                <div class="form-row">
+                    <div class="form-group third">
+                        <label>From (Code):</label>
+                        <input type="text" id="search-origin" placeholder="e.g.,BOM" maxlength="3" required>
+                    </div>
+                    <div class="form-group third">
+                        <label>To (Code):</label>
+                        <input type="text" id="search-dest" placeholder="e.g., LHR" maxlength="3" required>
+                    </div>
+                    <div class="form-group third">
+                        <label>Travel Date:</label>
+                        <input type="date" id="search-date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Search Database</button>
+            </form>
+
+            <div id="search-results">
+                </div>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

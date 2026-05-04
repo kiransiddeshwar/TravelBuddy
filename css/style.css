@@ -1,0 +1,124 @@
+:root {
+    --white: #ffffff;
+    --light-blue: #e3f2fd;
+    --medium-blue: #1976d2;
+    --dark-blue: #0d47a1;
+    --light-yellow: #fff9c4;
+    --text-dark: #333333;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--light-blue);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    font-size: 18px; 
+}
+
+/* Header & Logo Flexbox Layout */
+header {
+    background-color: var(--medium-blue);
+    color: var(--white);
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 130px;  /* Made it much bigger! */
+    height: 130px; /* EXACTLY the same as width to force a square base */
+    border-radius: 50%; /* Turns that perfect square into a perfect circle */
+    object-fit: cover; /* MAGIC TRICK: Fills the circle perfectly without stretching the image */
+    border: 3px solid var(--white);
+    background-color: var(--white); /* Adds a clean background just in case */
+}
+
+.title-container {
+    text-align: left;
+}
+
+.title-container h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.tagline {
+    margin: 5px 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--light-yellow);
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* View Logic */
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards & Buttons */
+.card {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.search-box {
+    background-color: var(--light-yellow);
+    border: 2px solid var(--medium-blue);
+}
+
+.trip-card {
+    border-left: 5px solid var(--medium-blue);
+}
+
+.btn-primary {
+    display: block; width: 100%; background-color: var(--medium-blue); color: var(--white);
+    border: none; padding: 15px; font-size: 1.2rem; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;
+}
+.btn-primary:hover { background-color: var(--dark-blue); }
+
+.btn-secondary {
+    background-color: transparent; color: var(--medium-blue); border: 2px solid var(--medium-blue);
+    padding: 10px 15px; font-size: 1rem; border-radius: 5px; cursor: pointer; font-weight: bold;
+}
+.btn-secondary.nav-back { margin-bottom: 20px; }
+
+/* Grid & Forms */
+.dashboard-grid { display: flex; gap: 20px; margin-bottom: 30px; }
+.btn-dashboard { flex: 1; background-color: var(--white); border: 2px solid var(--medium-blue); padding: 30px 20px; border-radius: 10px; cursor: pointer; text-align: center; transition: all 0.2s; }
+.btn-dashboard h3 { color: var(--medium-blue); margin-top: 0; }
+.btn-dashboard:hover { background-color: var(--medium-blue); color: var(--white); }
+.btn-dashboard:hover h3, .btn-dashboard:hover p { color: var(--white); }
+
+.form-group { margin-bottom: 20px; }
+.form-row { display: flex; gap: 15px; }
+.half { flex: 1; }
+.third { flex: 1; }
+
+label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--dark-blue); }
+input, select { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
+input:focus, select:focus { outline: none; border-color: var(--medium-blue); }
+.privacy-note { font-size: 0.9rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 5px; }
