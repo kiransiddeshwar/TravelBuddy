@@ -16,12 +16,13 @@ body {
     font-size: 18px; 
 }
 
-/* Header & Logo Flexbox Layout */
+/* 1. Flexbox turns the header into a side-by-side container */
 header {
-    background-color: var(--medium-blue);
-    color: var(--white);
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center; /* Vertically centers the logo with the text block */
+    justify-content: flex-start;
+    gap: 20px; /* Creates a perfect 20px gap between the logo and the text */
+    padding: 20px; /* Adjust padding as needed for your blue background */
 }
 
 .header-content {
@@ -33,13 +34,20 @@ header {
     margin: 0 auto;
 }
 
+/* 2. Lock the logo height to roughly match the 2 lines of text */
 .logo {
-    width: 130px;  /* Made it much bigger! */
-    height: 130px; /* EXACTLY the same as width to force a square base */
-    border-radius: 50%; /* Turns that perfect square into a perfect circle */
-    object-fit: cover; /* MAGIC TRICK: Fills the circle perfectly without stretching the image */
-    border: 3px solid var(--white);
-    background-color: var(--white); /* Adds a clean background just in case */
+    height: 70px; /* 70px is usually the perfect height for an H1 + P tag */
+    width: auto; /* Prevents the image from stretching out of shape */
+}
+
+/* 3. Strip away the invisible "default" spacing around the text */
+.header-text h1 {
+    margin: 0; 
+    margin-bottom: 5px; /* Adds a tiny breathing room between title and tagline */
+}
+
+.header-text p {
+    margin: 0;
 }
 
 .title-container {
