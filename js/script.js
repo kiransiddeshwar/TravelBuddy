@@ -3,12 +3,12 @@
 // ==========================================
 // Paste your copied config from the Firebase Console here:
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDMaiqzAS8EKTDjFbhYY9d6Fex4O0IOLoM",
+    authDomain: "travelbuddy-2c9a8.firebaseapp.com",
+    projectId: "travelbuddy-2c9a8",
+    storageBucket: "travelbuddy-2c9a8.firebasestorage.app",
+    messagingSenderId: "832399397945",
+    appId: "1:832399397945:web:18b0cbe07bc7663f90e9e8"
 };
 
 // Initialize Firebase App, Database, and Auth
