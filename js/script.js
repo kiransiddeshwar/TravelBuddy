@@ -91,6 +91,7 @@ function checkLoginOnLoad() {
 
 window.onload = () => {
     checkLoginOnLoad();
+    checkThemeOnLoad(); // Add this new line!
 };
 
 // ==========================================
@@ -178,4 +179,35 @@ function performSearch(event) {
           });
           resultsContainer.innerHTML = matchesFound ? resultsHTML : `<h3>Potential Matches:</h3><p>No travelers found.</p>`;
       });
+}
+
+// ==========================================
+// 6. DARK MODE TOGGLE LOGIC
+// ==========================================
+function toggleTheme() {
+    const body = document.body;
+    const themeBtn = document.getElementById('theme-toggle');
+    
+    // Toggle the class on or off
+    body.classList.toggle('dark-mode');
+    
+    // Update the button text and save to local storage
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeBtn.innerText = "☀️ Light Mode";
+    } else {
+        localStorage.setItem('theme', 'light');
+        themeBtn.innerText = "🌙 Dark Mode";
+    }
+}
+
+function checkThemeOnLoad() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeBtn = document.getElementById('theme-toggle');
+    
+    // If they previously chose dark mode, apply it immediately
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if(themeBtn) themeBtn.innerText = "☀️ Light Mode";
+    }
 }

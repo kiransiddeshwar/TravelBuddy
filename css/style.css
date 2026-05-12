@@ -135,3 +135,36 @@ label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--dark
 input, select { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
 input:focus, select:focus { outline: none; border-color: var(--medium-blue); }
 .privacy-note { font-size: 0.9rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 5px; }
+
+/* ==========================================
+   DARK MODE OVERRIDES
+   ========================================== */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Deepen the header blue slightly so it isn't too bright */
+body.dark-mode header {
+    background-color: #1a365d; 
+}
+
+/* Make the cards dark gray instead of white */
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+/* Fix input boxes so they don't blind the user */
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder {
+    color: #bbb;
+}
