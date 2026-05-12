@@ -9,11 +9,10 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: var(--light-blue);
-    color: var(--text-dark);
+    /* Keep whatever background-color or margin you already have here */
+    background-color: #f4f7f6;
     margin: 0;
-    padding: 0;
-    font-size: 18px; 
+    color: #333;
 }
 
 /* 1. Flexbox turns the header into a side-by-side container */
@@ -29,12 +28,19 @@ header {
     color: white; /* Makes sure your text is readable against the blue */
 }
 
+/* 2. Fix the Logo: Bigger, Brighter, and Circular */
 .logo {
-    height: 70px;
-    width: auto;
+    height: 95px; /* Significantly larger */
+    width: 95px; /* Keep it a perfect square to make the circle work */
+    object-fit: cover; /* Ensures the image fills the space neatly */
     
-    /* THE MAGIC TRICK TO HIDE THE WHITE BOX: */
-    mix-blend-mode: multiply; 
+    /* The UI Trick: Chop off the white corners to make a perfect circle */
+    border-radius: 50%; 
+    
+    /* Optional: Add a subtle shadow to make it pop off the blue background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    
+    /* DELETE the mix-blend-mode: multiply; line entirely! */
 }
 
 /* Keeping our text spacing clean */
