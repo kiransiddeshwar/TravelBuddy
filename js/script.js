@@ -95,29 +95,93 @@ window.onload = () => {
 };
 
 // ==========================================
-// 4. DATA ENTRY TO FIREBASE
+// 4. DATA ENTRY & DYNAMIC ITINERARY
 // ==========================================
+
+// Toggle to lock the arrival airline
+function toggleAirline() {
+    const isChecked = document.getElementById('same-airline').checked;
+    const arrAirlineInput = document.getElementById('arr-airline');
+    const depAirlineInput = document.getElementById('dep-airline').value;
+
+    if (isChecked) {
+        arrAirlineInput.value = depAirlineInput;
+        arrAirlineInput.readOnly = true;
+        arrAirlineInput.style.opacity = "0.7";
+    } else {
+        arrAirlineInput.value = '';
+        arrAirlineInput.readOnly = false;
+        arrAirlineInput.style.opacity = "1";
+    }
+}
+
+// Spawn new transit legs
+let transitCount = 0;
+function addTransit() {
+    transitCount++;
+    const container = document.getElementById('transit-container');
+    
+    const transitBlock = document.createElement('div');
+    transitBlock.classList.add('transit-leg');
+    transitBlock.innerHTML = `
+        <span style="font-weight: bold; min-width: 80px;">Transit ${transitCount}:</span>
+        <input type="text" placeholder="City Code (e.g., DXB)" class="t-city">
+        <input type="text" placeholder="Flight Code" class="t-flight">
+        <input type="text" placeholder="Airline" class="t-airline">
+        <button type="button" style="background:#dc3545; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
+    `;
+    container.appendChild(transitBlock);
+}
+
+// Submit to Firebase
 function submitEntryForm(event) {
     event.preventDefault(); 
     const submitBtn = event.target.querySelector('button[type="submit"]');
     submitBtn.innerText = "Saving to Cloud...";
     submitBtn.disabled = true;
 
+    // Gather all dynamic transit data into an array
+    let transitsArray = [];
+    document.querySelectorAll('.transit-leg').forEach(leg => {
+        transitsArray.push({
+            city: leg.querySelector('.t-city').value.toUpperCase(),
+            flight: leg.querySelector('.t-flight').value,
+            airline: leg.querySelector('.t-airline').value
+        });
+    });
+
     db.collection("travelers").add({
         firstName: document.getElementById('entry-fname').value,
         surname: document.getElementById('entry-lname').value,
-        origin: document.getElementById('entry-origin').value.toUpperCase(),
-        dest: document.getElementById('entry-dest').value.toUpperCase(),
-        airline: document.getElementById('entry-airline').value,
+        
+        // We keep Origin, Dest, and Date at the top level so Search works instantly!
+        origin: document.getElementById('dep-city').value.toUpperCase(),
+        dest: document.getElementById('arr-city').value.toUpperCase(),
         date: document.getElementById('entry-date').value,
+        
+        // The detailed itinerary object
+        departure: {
+            time: document.getElementById('dep-time').value,
+            flight: document.getElementById('dep-flight').value,
+            airline: document.getElementById('dep-airline').value
+        },
+        arrival: {
+            time: document.getElementById('arr-time').value,
+            flight: document.getElementById('arr-flight').value,
+            airline: document.getElementById('arr-airline').value
+        },
+        transits: transitsArray, // Saves our dynamic array
+
         intent: document.getElementById('entry-intent').value,
         comments: document.getElementById('entry-comments').value,
         flexibleDate: document.getElementById('entry-flex-date').checked,
         createdAt: firebase.firestore.FieldValue.serverTimestamp() 
     })
     .then(() => {
-        alert("Success! Traveler details securely saved.");
+        alert("Success! Your detailed itinerary is securely saved.");
         event.target.reset();
+        document.getElementById('transit-container').innerHTML = ''; // Clear transits
+        transitCount = 0;
         submitBtn.innerText = "Save to Cloud...";
         submitBtn.disabled = false;
         goToPage('page-dashboard');

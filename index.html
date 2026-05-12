@@ -62,76 +62,72 @@
         </div>
 
         <div id="page-entry" class="view" style="display: none;">
-            <h2>Enter Traveler Details</h2>
-            <form id="entry-form" class="card" onsubmit="submitEntryForm(event)">
+            <div class="card">
+                <h2>Enter Traveler Details</h2>
+                <p>Log your upcoming flight so others can find you.</p>
                 
-                <div class="form-row">
-                    <div class="form-group half">
-                        <label>First Name:</label>
-                        <input type="text" id="entry-fname" required>
+                <form id="entry-form" onsubmit="submitEntryForm(event)">
+                    
+                    <div class="form-row">
+                        <div class="form-group"><label>First Name:</label><input type="text" id="entry-fname" required></div>
+                        <div class="form-group"><label>Last Name:</label><input type="text" id="entry-lname" required></div>
                     </div>
-                    <div class="form-group half">
-                        <label>Surname:</label>
-                        <input type="text" id="entry-lname" required>
+
+                    <div class="itinerary-builder">
+                        <h4 style="margin-top: 0;">Flight Itinerary</h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group"><label>Dep. City (Code):</label><input type="text" id="dep-city" required placeholder="e.g., BOM"></div>
+                            <div class="form-group"><label>Date:</label><input type="date" id="entry-date" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Dep. Time:</label><input type="time" id="dep-time"></div>
+                            <div class="form-group"><label>Flight Code:</label><input type="text" id="dep-flight" placeholder="e.g., AI 101"></div>
+                            <div class="form-group"><label>Airline:</label><input type="text" id="dep-airline" required placeholder="e.g., Air India"></div>
+                        </div>
+
+                        <div id="transit-container"></div>
+                        <button type="button" class="add-transit-btn" onclick="addTransit()">+ Add Transit Leg</button>
+
+                        <div class="form-row" style="margin-top: 15px;">
+                            <div class="form-group"><label>Arr. City (Code):</label><input type="text" id="arr-city" required placeholder="e.g., LHR"></div>
+                            <div class="form-group"><label>Arr. Time:</label><input type="time" id="arr-time"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Flight Code:</label><input type="text" id="arr-flight" placeholder="e.g., BA 123"></div>
+                            <div class="form-group">
+                                <label>Airline:</label>
+                                <input type="text" id="arr-airline" required placeholder="e.g., British Airways">
+                                <label style="font-size: 0.8em; margin-top: 5px; display: block; cursor: pointer;">
+                                    <input type="checkbox" id="same-airline" onchange="toggleAirline()"> Same as departure
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group half">
-                        <label>Origin (Code):</label>
-                        <input type="text" id="entry-origin" required placeholder="e.g., BOM" maxlength="3">
+                    <div class="form-group">
+                        <label>Your Intent:</label>
+                        <select id="entry-intent">
+                            <option>I can help someone</option>
+                            <option>I need assistance</option>
+                            <option>Just looking for company</option>
+                        </select>
                     </div>
-                    <div class="form-group half">
-                        <label>Destination (Code):</label>
-                        <input type="text" id="entry-dest" required placeholder="e.g., LHR" maxlength="3">
+
+                    <div class="form-group">
+                        <label>Comments/Notes:</label>
+                        <textarea id="entry-comments" rows="3" placeholder="Any specific needs or info?"></textarea>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Airlines:</label>
-                    <input type="text" id="entry-airline" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group third">
-                        <label>Date:</label>
-                        <input type="date" id="entry-date" required>
+                    <div class="form-group">
+                        <label style="cursor: pointer;">
+                            <input type="checkbox" id="entry-flex-date"> My travel dates are flexible (+/- 3 days)
+                        </label>
                     </div>
-                    <div class="form-group third">
-                        <label>Time:</label>
-                        <input type="time" id="entry-time">
-                    </div>
-                    <div class="form-group third">
-                        <label>Flight No:</label>
-                        <input type="text" id="entry-flight">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Travel Intent:</label>
-                    <select id="entry-intent" required>
-                        <option value="" disabled selected>Select an option...</option>
-                        <option value="Looking for a buddy">Looking for a buddy</option>
-                        <option value="I can help">I can help</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Special Requests / Comments:</label>
-                    <textarea id="entry-comments" rows="3" placeholder="e.g., Mother traveling alone, wheelchair assistance requested, traveling with infant..."></textarea>
-                </div>
-
-                <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                    <input type="checkbox" id="entry-flex-date" style="width: auto; cursor: pointer;">
-                    <label for="entry-flex-date" style="margin: 0; cursor: pointer; font-weight: normal;">My dates are flexible (+/- 3 days)</label>
-                </div>
-
-                <div style="background-color: #f1f3f5; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 0.9em; color: #555;">
-                    🔒 Exact flight numbers and contact details are hidden from public search.
-                </div>
-
-                <button type="submit" class="btn-primary">Save to Cloud...</button>
-            </form>
+                    
+                    <button type="submit" class="btn-primary">Save to Cloud...</button>
+                </form>
+            </div>
         </div>
 
         <div id="page-search" class="view" style="display: none;">
