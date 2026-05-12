@@ -28,19 +28,20 @@ header {
     color: white; /* Makes sure your text is readable against the blue */
 }
 
-/* 2. Fix the Logo: Bigger, Brighter, and Circular */
 .logo {
-    height: 95px; /* Significantly larger */
-    width: 95px; /* Keep it a perfect square to make the circle work */
-    object-fit: cover; /* Ensures the image fills the space neatly */
+    height: 95px; 
+    width: 95px; 
+    object-fit: cover; 
     
-    /* The UI Trick: Chop off the white corners to make a perfect circle */
+    /* Acts as scissors to ensure the background is a perfect circle, no rectangles */
     border-radius: 50%; 
     
-    /* Optional: Add a subtle shadow to make it pop off the blue background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    /* Fills the transparent inside of the logo with a soft, natural page-color */
+    background-color: #f4f7f6; 
     
-    /* DELETE the mix-blend-mode: multiply; line entirely! */
+    /* Notice there is NO padding here! This keeps the background strictly inside the lines */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 /* Keeping our text spacing clean */
