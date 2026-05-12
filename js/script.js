@@ -3,12 +3,12 @@
 // ==========================================
 // IMPORTANT: Paste your REAL keys here from your Firebase Console!
 const firebaseConfig = {
-    apiKey: "PASTE_YOUR_ACTUAL_KEY_HERE",
-    authDomain: "PASTE_YOUR_ACTUAL_DOMAIN_HERE",
-    projectId: "PASTE_YOUR_ACTUAL_ID_HERE",
-    storageBucket: "PASTE_YOUR_ACTUAL_BUCKET_HERE",
-    messagingSenderId: "PASTE_YOUR_ACTUAL_SENDER_ID_HERE",
-    appId: "PASTE_YOUR_ACTUAL_APP_ID_HERE"
+    apiKey: "AIzaSyDMaiqzAS8EKTDjFbhYY9d6Fex4O0IOLoM",
+    authDomain: "travelbuddy-2c9a8.firebaseapp.com",
+    projectId: "travelbuddy-2c9a8",
+    storageBucket: "travelbuddy-2c9a8.firebasestorage.app",
+    messagingSenderId: "832399397945",
+    appId: "1:832399397945:web:18b0cbe07bc7663f90e9e8"
 };
 
 // Initialize Firebase
