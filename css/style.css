@@ -19,35 +19,33 @@ body {
 /* 1. Flexbox turns the header into a side-by-side container */
 header {
     display: flex;
-    align-items: center; /* Vertically centers the logo with the text block */
-    justify-content: flex-start;
-    gap: 20px; /* Creates a perfect 20px gap between the logo and the text */
-    padding: 20px; /* Adjust padding as needed for your blue background */
-}
-
-.header-content {
-    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 20px;
-    max-width: 700px;
-    margin: 0 auto;
+    padding: 20px;
+    
+    /* THE RESTORED BACKGROUND: */
+    background-color: #2b5797; /* A nice, trustworthy travel blue */
+    color: white; /* Makes sure your text is readable against the blue */
 }
 
-/* 2. Lock the logo height to roughly match the 2 lines of text */
 .logo {
-    height: 70px; /* 70px is usually the perfect height for an H1 + P tag */
-    width: auto; /* Prevents the image from stretching out of shape */
+    height: 70px;
+    width: auto;
+    
+    /* THE MAGIC TRICK TO HIDE THE WHITE BOX: */
+    mix-blend-mode: multiply; 
 }
 
-/* 3. Strip away the invisible "default" spacing around the text */
+/* Keeping our text spacing clean */
 .header-text h1 {
     margin: 0; 
-    margin-bottom: 5px; /* Adds a tiny breathing room between title and tagline */
+    margin-bottom: 5px; 
 }
 
 .header-text p {
     margin: 0;
+    color: #e0e0e0; /* Makes the tagline slightly lighter than the main title */
 }
 
 .title-container {
