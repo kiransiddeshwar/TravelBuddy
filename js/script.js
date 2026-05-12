@@ -1,17 +1,17 @@
 // ==========================================
 // 1. FIREBASE CONFIGURATION
 // ==========================================
-// Paste your copied config from the Firebase Console here:
+// IMPORTANT: Paste your REAL keys here from your Firebase Console!
 const firebaseConfig = {
-    apiKey: "AIzaSyDMaiqzAS8EKTDjFbhYY9d6Fex4O0IOLoM",
-    authDomain: "travelbuddy-2c9a8.firebaseapp.com",
-    projectId: "travelbuddy-2c9a8",
-    storageBucket: "travelbuddy-2c9a8.firebasestorage.app",
-    messagingSenderId: "832399397945",
-    appId: "1:832399397945:web:18b0cbe07bc7663f90e9e8"
+    apiKey: "PASTE_YOUR_ACTUAL_KEY_HERE",
+    authDomain: "PASTE_YOUR_ACTUAL_DOMAIN_HERE",
+    projectId: "PASTE_YOUR_ACTUAL_ID_HERE",
+    storageBucket: "PASTE_YOUR_ACTUAL_BUCKET_HERE",
+    messagingSenderId: "PASTE_YOUR_ACTUAL_SENDER_ID_HERE",
+    appId: "PASTE_YOUR_ACTUAL_APP_ID_HERE"
 };
 
-// Initialize Firebase App, Database, and Auth
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -20,19 +20,16 @@ const auth = firebase.auth();
 // 2. APP NAVIGATION LOGIC
 // ==========================================
 function goToPage(pageId) {
-    // Hide all views
     const views = document.querySelectorAll('.view');
     views.forEach(view => {
         view.classList.remove('active');
         view.style.display = 'none';
     });
 
-    // Show target view
     const target = document.getElementById(pageId);
     target.classList.add('active');
     target.style.display = 'block';
 
-    // Show/hide back button
     const backBtn = document.getElementById('back-btn');
     if (pageId === 'page-login' || pageId === 'page-dashboard') {
         backBtn.style.display = 'none';
@@ -42,7 +39,7 @@ function goToPage(pageId) {
 }
 
 // ==========================================
-// 3. MAGIC LINK AUTHENTICATION LOGIC
+// 3. SECURE LINK AUTHENTICATION LOGIC
 // ==========================================
 function sendMagicLink(event) {
     event.preventDefault();
@@ -52,9 +49,7 @@ function sendMagicLink(event) {
     btn.innerText = "Sending...";
     btn.disabled = true;
 
-    // Configuration for the email link
     const actionCodeSettings = {
-        // IMPORTANT: Ensure this exactly matches your live GitHub Pages URL!
         url: 'https://kiransiddeshwar.github.io/TravelBuddy/', 
         handleCodeInApp: true,
     };
@@ -62,23 +57,21 @@ function sendMagicLink(event) {
     auth.sendSignInLinkToEmail(email, actionCodeSettings)
         .then(() => {
             window.localStorage.setItem('emailForSignIn', email);
-            alert('Magic link sent! Check your email inbox (and spam folder) to log in.');
+            // Updated terminology here:
+            alert('Secure link sent! Check your email inbox (and spam folder) to log in.');
             btn.innerText = "Check your email!";
         })
         .catch((error) => {
             console.error("Error sending link", error);
             alert("Oops! " + error.message);
-            btn.innerText = "Send Magic Link";
+            btn.innerText = "Send Secure Link"; // Updated terminology
             btn.disabled = false;
         });
 }
 
 function checkLoginOnLoad() {
-    // Check if the current URL contains the Firebase magic link code
     if (auth.isSignInWithEmailLink(window.location.href)) {
-        
         let email = window.localStorage.getItem('emailForSignIn');
-        
         if (!email) {
             email = window.prompt('Please confirm your email address to complete sign-in:');
         }
@@ -87,7 +80,7 @@ function checkLoginOnLoad() {
             .then((result) => {
                 window.localStorage.removeItem('emailForSignIn'); 
                 alert("Successfully logged in!");
-                goToPage('page-dashboard'); // Send them to the main menu
+                goToPage('page-dashboard');
             })
             .catch((error) => {
                 console.error("Error signing in", error);
@@ -96,7 +89,6 @@ function checkLoginOnLoad() {
     }
 }
 
-// Run the auth check every time the app loads
 window.onload = () => {
     checkLoginOnLoad();
 };
@@ -106,7 +98,6 @@ window.onload = () => {
 // ==========================================
 function submitEntryForm(event) {
     event.preventDefault(); 
-    
     const submitBtn = event.target.querySelector('button[type="submit"]');
     submitBtn.innerText = "Saving to Cloud...";
     submitBtn.disabled = true;
@@ -118,24 +109,21 @@ function submitEntryForm(event) {
         dest: document.getElementById('entry-dest').value.toUpperCase(),
         airline: document.getElementById('entry-airline').value,
         date: document.getElementById('entry-date').value,
-        
-        // MVP Fields
         intent: document.getElementById('entry-intent').value,
         comments: document.getElementById('entry-comments').value,
         flexibleDate: document.getElementById('entry-flex-date').checked,
-        
         createdAt: firebase.firestore.FieldValue.serverTimestamp() 
     })
-    .then((docRef) => {
-        alert("Success! Traveler details securely saved to the database.");
-        event.target.reset(); // Clear the form
-        submitBtn.innerText = "Save to Cloud..."; // Reset button
+    .then(() => {
+        alert("Success! Traveler details securely saved.");
+        event.target.reset();
+        submitBtn.innerText = "Save to Cloud...";
         submitBtn.disabled = false;
         goToPage('page-dashboard');
     })
     .catch((error) => {
-        console.error("Error adding document: ", error);
-        alert("Oops! Something went wrong saving to the database. Check the console.");
+        console.error("Error: ", error);
+        alert("Oops! Check the console for errors.");
         submitBtn.innerText = "Save to Cloud...";
         submitBtn.disabled = false;
     });
@@ -146,11 +134,9 @@ function submitEntryForm(event) {
 // ==========================================
 function performSearch(event) {
     event.preventDefault();
-    
     const searchOrigin = document.getElementById('search-origin').value.toUpperCase();
     const searchDest = document.getElementById('search-dest').value.toUpperCase();
-    const searchDateStr = document.getElementById('search-date').value;
-    const searchDate = new Date(searchDateStr);
+    const searchDate = new Date(document.getElementById('search-date').value);
 
     const resultsContainer = document.getElementById('search-results');
     resultsContainer.innerHTML = '<h3>Searching Cloud Database...</h3>';
@@ -163,49 +149,33 @@ function performSearch(event) {
       .where("dest", "==", searchDest)
       .get()
       .then((querySnapshot) => {
-          
           querySnapshot.forEach((doc) => {
               let traveler = doc.data(); 
               let travelerDate = new Date(traveler.date);
+              let diffDays = Math.ceil(Math.abs(travelerDate - searchDate) / (1000 * 3600 * 24));
 
-              // Calculate difference in days locally
-              let timeDiff = Math.abs(travelerDate.getTime() - searchDate.getTime());
-              let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+              let bufferDays = traveler.flexibleDate ? 3 : 1; 
 
-              // Check flexibility
-              let isFlexible = traveler.flexibleDate || false;
-              let bufferDays = isFlexible ? 3 : 1; 
-
-              // Apply dynamic date algorithm
               if (diffDays <= bufferDays) {
                   matchesFound = true;
-                  let dateMessage = diffDays === 0 ? "(Exact match!)" : `(${diffDays} day difference)`;
-                  let intentColor = traveler.intent === "I can help" ? "green" : "#0056b3"; // Color coding based on intent
+                  let dateMsg = diffDays === 0 ? "(Exact match!)" : `(${diffDays} day diff)`;
+                  let color = traveler.intent === "I can help" ? "green" : "#0056b3";
                   
                   resultsHTML += `
-                      <div class="card trip-card" style="border-left: 5px solid ${intentColor};">
-                          <h4 style="color: ${intentColor}; margin-top: 0;">${traveler.intent}</h4>
+                      <div class="card trip-card" style="border-left: 5px solid ${color};">
+                          <h4 style="color: ${color}; margin-top: 0;">${traveler.intent}</h4>
                           <p><strong>Name:</strong> ${traveler.firstName} ${traveler.surname}</p>
                           <p><strong>Route:</strong> ${traveler.origin} ➔ ${traveler.dest}</p>
-                          <p><strong>Date:</strong> ${traveler.date} <em>${dateMessage}</em></p>
+                          <p><strong>Date:</strong> ${traveler.date} <em>${dateMsg}</em></p>
                           <p><strong>Airlines:</strong> ${traveler.airline}</p>
                           <div style="background: #f1f3f5; padding: 10px; border-radius: 5px; margin: 10px 0;">
                               <p style="margin: 0; font-size: 0.9em;"><strong>Notes:</strong> ${traveler.comments || "None"}</p>
                           </div>
-                          <button class="btn-primary" onclick="alert('Connection request logic coming soon!')">Request to Connect</button>
+                          <button class="btn-primary" onclick="alert('Connection request coming soon!')">Request to Connect</button>
                       </div>
                   `;
               }
           });
-
-          if (matchesFound) {
-              resultsContainer.innerHTML = resultsHTML;
-          } else {
-              resultsContainer.innerHTML = `<h3>Potential Matches:</h3><p>No travelers found matching this route within the date window. Try another date or route!</p>`;
-          }
-      })
-      .catch((error) => {
-          console.error("Error getting documents: ", error);
-          resultsContainer.innerHTML = `<p>Error searching database. Please try again.</p>`;
+          resultsContainer.innerHTML = matchesFound ? resultsHTML : `<h3>Potential Matches:</h3><p>No travelers found.</p>`;
       });
 }
