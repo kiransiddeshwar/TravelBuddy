@@ -41,10 +41,23 @@
         </div>
 
         <div id="page-dashboard" class="view" style="display: none;">
-            <div class="card text-center">
-                <h3>Welcome to Your Hub</h3>
-                <button class="btn-primary" style="margin-bottom: 15px;" onclick="goToPage('page-entry')">Enter Traveler Details</button>
-                <button class="btn-secondary" onclick="goToPage('page-search')">Search Travelers</button>
+            <div class="card">
+                <h2>Welcome to Your Hub</h2>
+                <p>What would you like to do today?</p>
+    
+                <div class="action-grid">
+                    <button class="action-card" onclick="goToPage('page-entry')">
+                        <div class="action-icon">✈️</div>
+                        <h3>Enter Details</h3>
+                        <p>Log your upcoming flight to offer or request assistance.</p>
+                    </button>
+
+                    <button class="action-card" onclick="goToPage('page-search')">
+                        <div class="action-icon">🔍</div>
+                        <h3>Search Travelers</h3>
+                        <p>Find fellow Indian globe-trotters on your route.</p>
+                    </button>
+                </div>
             </div>
         </div>
 
