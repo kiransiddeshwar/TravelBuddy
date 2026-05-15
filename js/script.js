@@ -127,6 +127,8 @@ function submitEntryForm(event) {
     });
 
     db.collection("travelers").add({
+        userId: auth.currentUser.uid,
+        userEmail: auth.currentUser.email,
         firstName: document.getElementById('entry-fname').value,
         surname: document.getElementById('entry-lname').value,
         origin: document.getElementById('dep-city').value.toUpperCase(),
@@ -242,6 +244,46 @@ function checkThemeOnLoad() {
         document.body.classList.add('dark-mode');
         if(themeBtn) themeBtn.innerText = "☀️ Light Mode";
     }
+}
+
+// ==========================================
+// 7. MY PROFILE LOGIC
+// ==========================================
+function loadMyProfile() {
+    goToPage('page-profile');
+    const container = document.getElementById('my-flights-container');
+    container.innerHTML = '<h3>Loading your flights...</h3>';
+
+    if (!auth.currentUser) return; // Safety check
+
+    // Ask Firebase for ONLY this user's flights
+    db.collection("travelers")
+      .where("userId", "==", auth.currentUser.uid)
+      .get()
+      .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+              container.innerHTML = '<p>You have not logged any flights yet!</p>';
+              return;
+          }
+
+          let html = '<h3>My Saved Flights:</h3>';
+          querySnapshot.forEach((doc) => {
+              let flight = doc.data();
+              html += `
+                  <div class="card trip-card" style="border: 1px solid #ccc; margin-bottom: 15px;">
+                      <h4 style="margin-top: 0; color: #2b5797;">${flight.origin} ➔ ${flight.dest}</h4>
+                      <p><strong>Date:</strong> ${flight.date}</p>
+                      <p><strong>Intent:</strong> ${flight.intent}</p>
+                      <button class="btn-secondary" style="color: #dc3545; border-color: #dc3545;" onclick="alert('Delete functionality coming soon!')">Delete Flight</button>
+                  </div>
+              `;
+          });
+          container.innerHTML = html;
+      })
+      .catch(error => {
+          console.error("Error loading profile:", error);
+          container.innerHTML = '<p>Error loading flights.</p>';
+      });
 }
 
 // ==========================================

@@ -61,6 +61,12 @@
                     <h3>Search Travelers</h3>
                     <p>Find fellow Indian globe-trotters on your route.</p>
                 </button>
+                
+                <button class="action-card" onclick="loadMyProfile()" style="grid-column: 1 / -1;">
+                    <div class="action-icon">👤</div>
+                    <h3>My Profile & Requests</h3>
+                    <p>View your saved itineraries and manage connection requests.</p>
+                </button>
             </div>
             
             <div style="text-align: center; margin-top: 20px;">
@@ -140,6 +146,16 @@
                 
                 <button type="submit" class="btn-primary">Save</button>
             </form>
+        </div>
+    </div>
+
+    <div id="page-profile" class="view" style="display: none;">
+        <div class="card">
+            <h2>My Profile</h2>
+            <p>Manage your active flights and connections.</p>
+            
+            <div id="my-flights-container">
+                </div>
         </div>
     </div>
 
