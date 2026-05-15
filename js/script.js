@@ -97,13 +97,16 @@ function addTransit() {
     const container = document.getElementById('transit-container');
     
     const transitBlock = document.createElement('div');
-    transitBlock.classList.add('transit-leg');
+    // Add the new timeline class so it gets the line and dot!
+    transitBlock.classList.add('timeline-stop'); 
     transitBlock.innerHTML = `
-        <span style="font-weight: bold; min-width: 80px;">Transit ${transitCount}:</span>
-        <input type="text" placeholder="City (e.g., Dubai)" class="t-city">
-        <input type="text" placeholder="Flight Code" class="t-flight">
-        <input type="text" placeholder="Airline" class="t-airline">
-        <button type="button" style="background:#dc3545; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
+        <div class="stop-label" style="color: #e67e22;">⏱️ Transit ${transitCount}</div>
+        <div class="form-row" style="align-items: flex-end;">
+            <div class="form-group"><input type="text" placeholder="City (e.g., Dubai)" class="t-city"></div>
+            <div class="form-group"><input type="text" placeholder="Flight Code" class="t-flight"></div>
+            <div class="form-group"><input type="text" placeholder="Airline" class="t-airline"></div>
+            <button type="button" style="background:#dc3545; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; height: 40px;" onclick="this.parentElement.parentElement.remove()">X</button>
+        </div>
     `;
     container.appendChild(transitBlock);
 }

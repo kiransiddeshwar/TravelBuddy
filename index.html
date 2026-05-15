@@ -82,33 +82,39 @@
                 </div>
 
                 <div class="itinerary-builder">
-                    <h4 style="margin-top: 0;">Flight Itinerary</h4>
+                    <h4 style="margin-top: 0; margin-bottom: 20px;">Flight Itinerary</h4>
                     
-                    <div class="form-row">
-                        <div class="form-group"><label>Departure City:</label><input type="text" id="dep-city" required placeholder="e.g., Mumbai"></div>
-                        <div class="form-group"><label>Date:</label><input type="date" id="entry-date" required></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Departure Time:</label><input type="time" id="dep-time"></div>
-                        <div class="form-group"><label>Flight Code:</label><input type="text" id="dep-flight" placeholder="e.g., AI 101"></div>
-                        <div class="form-group"><label>Airline:</label><input type="text" id="dep-airline" required placeholder="e.g., Air India"></div>
+                    <div class="timeline-stop departure-stop">
+                        <div class="stop-label">🛫 Departure</div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Departure City:</label><input type="text" id="dep-city" required placeholder="e.g., Mumbai"></div>
+                            <div class="form-group"><label>Date:</label><input type="date" id="entry-date" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Departure Time:</label><input type="time" id="dep-time"></div>
+                            <div class="form-group"><label>Flight Code:</label><input type="text" id="dep-flight" placeholder="e.g., AI 101"></div>
+                            <div class="form-group"><label>Airline:</label><input type="text" id="dep-airline" required placeholder="e.g., Air India"></div>
+                        </div>
                     </div>
 
                     <div id="transit-container"></div>
                     <button type="button" class="add-transit-btn" onclick="addTransit()">+ Add Transit Leg</button>
 
-                    <div class="form-row" style="margin-top: 15px;">
-                        <div class="form-group"><label>Arrival City:</label><input type="text" id="arr-city" required placeholder="e.g., London"></div>
-                        <div class="form-group"><label>Arrival Time:</label><input type="time" id="arr-time"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Flight Code:</label><input type="text" id="arr-flight" placeholder="e.g., BA 123"></div>
-                        <div class="form-group">
-                            <label>Airline:</label>
-                            <input type="text" id="arr-airline" required placeholder="e.g., British Airways">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="same-airline" onchange="toggleAirline()"> Same as departure
-                            </label>
+                    <div class="timeline-stop arrival-stop">
+                        <div class="stop-label">🛬 Arrival</div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Arrival City:</label><input type="text" id="arr-city" required placeholder="e.g., London"></div>
+                            <div class="form-group"><label>Arrival Time:</label><input type="time" id="arr-time"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Flight Code:</label><input type="text" id="arr-flight" placeholder="e.g., BA 123"></div>
+                            <div class="form-group">
+                                <label>Airline:</label>
+                                <input type="text" id="arr-airline" required placeholder="e.g., British Airways">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="same-airline" onchange="toggleAirline()"> Same as departure
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

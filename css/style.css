@@ -194,6 +194,43 @@ button { font-family: inherit; }
 }
 
 /* ==========================================
+   JOURNEY TIMELINE UI
+   ========================================== */
+.timeline-stop {
+    position: relative;
+    padding-left: 25px; /* Pushes content right to make room for the line */
+    margin-bottom: 15px;
+    border-left: 2px dashed #adb5bd; /* The vertical connecting line */
+}
+
+/* Remove the line for the final stop so it doesn't trail off */
+.arrival-stop {
+    border-left-color: transparent; 
+}
+
+/* The circular nodes (dots) on the timeline */
+.timeline-stop::before {
+    content: '';
+    position: absolute;
+    left: -8px; /* Centers the dot exactly over the border */
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #2b5797;
+    border: 3px solid #f8f9fa; /* Matches itinerary-builder background to look like a cutout */
+}
+
+.stop-label {
+    font-weight: 700;
+    color: #2b5797;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* ==========================================
    DARK MODE OVERRIDES
    ========================================== */
 body.dark-mode {
@@ -239,3 +276,12 @@ body.dark-mode .itinerary-builder { background: #1e1e1e; border-color: #444; }
 body.dark-mode .transit-leg { background: #2a2a2a; border-color: #555; }
 body.dark-mode .add-transit-btn { background-color: #333; color: #e0e0e0; border-color: #555; }
 body.dark-mode .add-transit-btn:hover { background-color: #444; }
+
+/* Dark Mode Overrides for Timeline */
+body.dark-mode .timeline-stop { border-left-color: #555; }
+body.dark-mode .arrival-stop { border-left-color: transparent; }
+body.dark-mode .timeline-stop::before { 
+    background-color: #6fb3ff; 
+    border-color: #1e1e1e; /* Matches dark card background */
+}
+body.dark-mode .stop-label { color: #6fb3ff; }
