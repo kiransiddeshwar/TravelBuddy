@@ -191,7 +191,6 @@ function performSearch(event) {
               let traveler = doc.data(); 
               let travelerDate = new Date(traveler.date);
               let diffDays = Math.ceil(Math.abs(travelerDate - searchDate) / (1000 * 3600 * 24));
-
               let bufferDays = traveler.flexibleDate ? 15 : 1; 
 
               if (diffDays <= bufferDays) {
@@ -199,6 +198,14 @@ function performSearch(event) {
                   let dateMsg = diffDays === 0 ? "(Exact match!)" : `(${diffDays} day diff)`;
                   let color = traveler.intent === "I can help someone" ? "green" : "#0056b3";
                   
+                  // Logic to prevent users from requesting a connection with themselves!
+                  let actionBtn = '';
+                  if (traveler.userId === auth.currentUser.uid) {
+                      actionBtn = `<p style="color: #666; font-style: italic;">This is your flight.</p>`;
+                  } else {
+                      actionBtn = `<button class="btn-primary" onclick="sendConnectionRequest('${traveler.userId}', '${traveler.origin}', '${traveler.dest}', '${traveler.date}')">Request to Connect</button>`;
+                  }
+
                   resultsHTML += `
                       <div class="card trip-card" style="border-left: 5px solid ${color};">
                           <h4 style="color: ${color}; margin-top: 0;">${traveler.intent}</h4>
@@ -209,7 +216,7 @@ function performSearch(event) {
                           <div style="background: var(--bg-alt, #f1f3f5); padding: 10px; border-radius: 5px; margin: 10px 0;">
                               <p style="margin: 0; font-size: 0.9em; color: var(--text-dark, #333);"><strong>Notes:</strong> ${traveler.comments || "None"}</p>
                           </div>
-                          <button class="btn-primary" onclick="alert('Connection request coming soon!')">Request to Connect</button>
+                          ${actionBtn}
                       </div>
                   `;
               }
@@ -219,31 +226,32 @@ function performSearch(event) {
 }
 
 // ==========================================
-// 6. DARK MODE TOGGLE LOGIC
+// 6. THE HANDSHAKE ENGINE
 // ==========================================
-function toggleTheme() {
-    const body = document.body;
-    const themeBtn = document.getElementById('theme-toggle');
-    
-    body.classList.toggle('dark-mode');
-    
-    if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        themeBtn.innerText = "☀️ Light Mode";
-    } else {
-        localStorage.setItem('theme', 'light');
-        themeBtn.innerText = "🌙 Dark Mode";
-    }
+function sendConnectionRequest(receiverId, origin, dest, date) {
+    if (!auth.currentUser) return alert("Please log in first.");
+
+    db.collection("requests").add({
+        senderId: auth.currentUser.uid,
+        senderEmail: auth.currentUser.email,
+        receiverId: receiverId,
+        flightDetails: `${origin} ➔ ${dest} on ${date}`,
+        status: "pending",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => alert("Request sent! You will be notified if they accept."))
+    .catch((error) => console.error("Error sending request: ", error));
 }
 
-function checkThemeOnLoad() {
-    const savedTheme = localStorage.getItem('theme');
-    const themeBtn = document.getElementById('theme-toggle');
-    
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        if(themeBtn) themeBtn.innerText = "☀️ Light Mode";
-    }
+function updateRequestStatus(requestId, newStatus) {
+    db.collection("requests").doc(requestId).update({
+        status: newStatus
+    })
+    .then(() => {
+        alert(`Request ${newStatus}!`);
+        loadMyProfile(); // Reload the profile to show the changes
+    })
+    .catch((error) => console.error("Error updating status: ", error));
 }
 
 // ==========================================
@@ -251,38 +259,62 @@ function checkThemeOnLoad() {
 // ==========================================
 function loadMyProfile() {
     goToPage('page-profile');
-    const container = document.getElementById('my-flights-container');
-    container.innerHTML = '<h3>Loading your flights...</h3>';
+    const flightsContainer = document.getElementById('my-flights-container');
+    const reqContainer = document.getElementById('my-requests-container');
+    
+    flightsContainer.innerHTML = '<h4>Loading your flights...</h4>';
+    reqContainer.innerHTML = '<h4>Loading inbox...</h4>';
 
-    if (!auth.currentUser) return; // Safety check
+    if (!auth.currentUser) return;
 
-    // Ask Firebase for ONLY this user's flights
-    db.collection("travelers")
-      .where("userId", "==", auth.currentUser.uid)
-      .get()
+    // 1. Load Their Flights
+    db.collection("travelers").where("userId", "==", auth.currentUser.uid).get()
       .then((querySnapshot) => {
           if (querySnapshot.empty) {
-              container.innerHTML = '<p>You have not logged any flights yet!</p>';
-              return;
+              flightsContainer.innerHTML = '<p>You have not logged any flights yet.</p>';
+          } else {
+              let html = '';
+              querySnapshot.forEach((doc) => {
+                  let f = doc.data();
+                  html += `<div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; margin-bottom: 10px;">
+                              <strong>${f.origin} ➔ ${f.dest}</strong> (${f.date}) <br>
+                              <span style="font-size: 0.9em; color: #666;">${f.intent}</span>
+                           </div>`;
+              });
+              flightsContainer.innerHTML = html;
           }
+      });
 
-          let html = '<h3>My Saved Flights:</h3>';
-          querySnapshot.forEach((doc) => {
-              let flight = doc.data();
-              html += `
-                  <div class="card trip-card" style="border: 1px solid #ccc; margin-bottom: 15px;">
-                      <h4 style="margin-top: 0; color: #2b5797;">${flight.origin} ➔ ${flight.dest}</h4>
-                      <p><strong>Date:</strong> ${flight.date}</p>
-                      <p><strong>Intent:</strong> ${flight.intent}</p>
-                      <button class="btn-secondary" style="color: #dc3545; border-color: #dc3545;" onclick="alert('Delete functionality coming soon!')">Delete Flight</button>
-                  </div>
-              `;
-          });
-          container.innerHTML = html;
-      })
-      .catch(error => {
-          console.error("Error loading profile:", error);
-          container.innerHTML = '<p>Error loading flights.</p>';
+    // 2. Load Their Incoming Requests (People wanting to connect with THEM)
+    db.collection("requests").where("receiverId", "==", auth.currentUser.uid).get()
+      .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+              reqContainer.innerHTML = '<p>No pending requests.</p>';
+          } else {
+              let html = '';
+              querySnapshot.forEach((doc) => {
+                  let req = doc.data();
+                  let reqId = doc.id;
+                  
+                  if (req.status === "pending") {
+                      html += `<div style="background: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-bottom: 10px;">
+                                  <strong>New Request!</strong> Someone wants to connect for your flight: <em>${req.flightDetails}</em>
+                                  <div style="margin-top: 10px;">
+                                      <button class="btn-primary" style="width: auto; padding: 5px 15px; background: #28a745;" onclick="updateRequestStatus('${reqId}', 'accepted')">Accept (Share Email)</button>
+                                      <button class="btn-secondary" style="color: #dc3545; border-color: #dc3545; padding: 5px 15px;" onclick="updateRequestStatus('${reqId}', 'declined')">Decline</button>
+                                  </div>
+                               </div>`;
+                  } else if (req.status === "accepted") {
+                      html += `<div style="background: #d4edda; padding: 15px; border-left: 5px solid #28a745; margin-bottom: 10px;">
+                                  <strong>Accepted Connection</strong> for <em>${req.flightDetails}</em><br>
+                                  You can now email them at: <strong><a href="mailto:${req.senderEmail}">${req.senderEmail}</a></strong>
+                               </div>`;
+                  }
+              });
+              
+              if(html === '') html = '<p>No pending requests.</p>';
+              reqContainer.innerHTML = html;
+          }
       });
 }
 
