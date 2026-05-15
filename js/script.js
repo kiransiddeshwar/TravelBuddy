@@ -319,9 +319,36 @@ function loadMyProfile() {
 }
 
 // ==========================================
+// 8. DARK MODE TOGGLE LOGIC
+// ==========================================
+function toggleTheme() {
+    const body = document.body;
+    const themeBtn = document.getElementById('theme-toggle');
+    
+    body.classList.toggle('dark-mode');
+    
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeBtn.innerText = "☀️ Light Mode";
+    } else {
+        localStorage.setItem('theme', 'light');
+        themeBtn.innerText = "🌙 Dark Mode";
+    }
+}
+
+function checkThemeOnLoad() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeBtn = document.getElementById('theme-toggle');
+    
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if(themeBtn) themeBtn.innerText = "☀️ Light Mode";
+    }
+}
+
+// ==========================================
 // INITIALIZATION
 // ==========================================
 window.onload = () => {
     checkThemeOnLoad();
-    // checkLoginOnLoad() is removed because onAuthStateChanged handles it automatically now!
 };
