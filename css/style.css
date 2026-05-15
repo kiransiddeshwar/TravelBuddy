@@ -1,200 +1,117 @@
-:root {
-    --white: #ffffff;
-    --light-blue: #e3f2fd;
-    --medium-blue: #1976d2;
-    --dark-blue: #0d47a1;
-    --light-yellow: #fff9c4;
-    --text-dark: #333333;
-}
-
+/* Global Reset and Font */
 body {
     font-family: 'Montserrat', sans-serif;
-    /* Keep whatever background-color or margin you already have here */
     background-color: #f4f7f6;
     margin: 0;
     color: #333;
 }
 
-/* 1. Flexbox turns the header into a side-by-side container */
+/* Header Styling */
 header {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 20px;
     padding: 20px;
-    
-    /* THE RESTORED BACKGROUND: */
-    background-color: #2b5797; /* A nice, trustworthy travel blue */
-    color: white; /* Makes sure your text is readable against the blue */
+    background-color: #2b5797;
+    color: white;
 }
+
+.header-text h1 { margin: 0; margin-bottom: 5px; }
+.header-text p { margin: 0; color: #e0e0e0; }
 
 .logo {
     height: 95px; 
     width: 95px; 
     object-fit: cover; 
-    
-    /* Acts as scissors to ensure the background is a perfect circle, no rectangles */
     border-radius: 50%; 
-    
-    /* Fills the transparent inside of the logo with a soft, natural page-color */
     background-color: #f4f7f6; 
-    
-    /* Notice there is NO padding here! This keeps the background strictly inside the lines */
-    
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
-/* Keeping our text spacing clean */
-.header-text h1 {
-    margin: 0; 
-    margin-bottom: 5px; 
-}
-
-.header-text p {
-    margin: 0;
-    color: #e0e0e0; /* Makes the tagline slightly lighter than the main title */
-}
-
-.title-container {
-    text-align: left;
-}
-
-.title-container h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.1;
-}
-
-.tagline {
-    margin: 5px 0 0;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--light-yellow);
-    opacity: 0.9;
-}
-
+/* Layout Containers */
 .container {
-    max-width: 700px;
-    margin: 30px auto;
+    max-width: 800px;
+    margin: 40px auto;
     padding: 0 20px;
 }
 
-/* View Logic */
-.view { display: none; }
-.view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Cards & Buttons */
 .card {
-    background-color: var(--white);
-    border-radius: 10px;
+    background: white;
     padding: 30px;
+    border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
-.search-box {
-    background-color: var(--light-yellow);
-    border: 2px solid var(--medium-blue);
+/* Forms and Inputs */
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; font-weight: 600; color: #2b5797; }
+input[type="text"], input[type="email"], input[type="date"], input[type="time"], select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: inherit;
 }
 
-.trip-card {
-    border-left: 5px solid var(--medium-blue);
+/* Textarea and Checkbox alignment Polish */
+textarea {
+    width: 100%;
+    box-sizing: border-box; 
+    font-family: inherit; 
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc; 
+    resize: vertical; 
 }
 
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 5px;
+    color: inherit;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin: 0;
+    width: auto;
+}
+
+/* Buttons */
+button { font-family: inherit; }
 .btn-primary {
-    display: block; width: 100%; background-color: var(--medium-blue); color: var(--white);
-    border: none; padding: 15px; font-size: 1.2rem; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;
+    background-color: #4a76c4;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
 }
-.btn-primary:hover { background-color: var(--dark-blue); }
+.btn-primary:hover { background-color: #3b5fa0; }
 
 .btn-secondary {
-    background-color: transparent; color: var(--medium-blue); border: 2px solid var(--medium-blue);
-    padding: 10px 15px; font-size: 1rem; border-radius: 5px; cursor: pointer; font-weight: bold;
+    background-color: transparent;
+    color: #2b5797;
+    border: 1px solid #2b5797;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
 }
-.btn-secondary.nav-back { margin-bottom: 20px; }
+.btn-secondary:hover { background-color: #f0f4f8; }
 
-/* Grid & Forms */
-.dashboard-grid { display: flex; gap: 20px; margin-bottom: 30px; }
-.btn-dashboard { flex: 1; background-color: var(--white); border: 2px solid var(--medium-blue); padding: 30px 20px; border-radius: 10px; cursor: pointer; text-align: center; transition: all 0.2s; }
-.btn-dashboard h3 { color: var(--medium-blue); margin-top: 0; }
-.btn-dashboard:hover { background-color: var(--medium-blue); color: var(--white); }
-.btn-dashboard:hover h3, .btn-dashboard:hover p { color: var(--white); }
-
-.form-group { margin-bottom: 20px; }
-.form-row { display: flex; gap: 15px; }
-.half { flex: 1; }
-.third { flex: 1; }
-
-label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--dark-blue); }
-input, select { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
-input:focus, select:focus { outline: none; border-color: var(--medium-blue); }
-.privacy-note { font-size: 0.9rem; color: #555; background-color: #f0f0f0; padding: 10px; border-radius: 5px; }
-
-/* ==========================================
-   DARK MODE OVERRIDES
-   ========================================== */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-/* Deepen the header blue slightly so it isn't too bright */
-body.dark-mode header {
-    background-color: #1a365d; 
-}
-
-/* Make the cards dark gray instead of white */
-body.dark-mode .card {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-}
-
-/* Fix input boxes so they don't blind the user */
-body.dark-mode input, 
-body.dark-mode select, 
-body.dark-mode textarea {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-}
-
-body.dark-mode input::placeholder {
-    color: #bbb;
-}
-
-/* Dark Mode overrides for Action Cards */
-body.dark-mode .action-card {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #e0e0e0;
-}
-
-body.dark-mode .action-card h3 {
-    color: #6fb3ff; /* Lighter blue so it pops on dark backgrounds */
-}
-
-body.dark-mode .action-card p {
-    color: #aaa;
-}
-
-body.dark-mode .action-card:hover {
-    border-color: #6fb3ff;
-    background-color: #333;
-}
-
-/* ==========================================
-   HUB ACTION CARDS (GRID LAYOUT)
-   ========================================== */
+/* Dashboard Action Grid */
 .action-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    grid-template-columns: 1fr 1fr; 
     gap: 20px;
     margin-top: 20px;
 }
@@ -207,45 +124,21 @@ body.dark-mode .action-card:hover {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Montserrat', sans-serif;
     color: #333;
 }
 
 .action-card:hover {
     border-color: #2b5797;
     background-color: #eef2f7;
-    transform: translateY(-3px); /* Gentle lift effect on hover */
+    transform: translateY(-3px); 
     box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
-.action-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
+.action-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.action-card h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #2b5797; }
+.action-card p { margin: 0; font-size: 0.9rem; color: #666; line-height: 1.4; }
 
-.action-card h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
-    color: #2b5797;
-}
-
-.action-card p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.4;
-}
-
-/* Make them stack one on top of the other on small mobile screens */
-@media (max-width: 600px) {
-    .action-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ==========================================
-   DYNAMIC ITINERARY BUILDER
-   ========================================== */
+/* Dynamic Itinerary Builder */
 .itinerary-builder {
     background: #f8f9fa;
     padding: 15px;
@@ -259,11 +152,7 @@ body.dark-mode .action-card:hover {
     gap: 15px;
     margin-bottom: 15px;
 }
-
-.form-row .form-group {
-    flex: 1;
-    margin-bottom: 0;
-}
+.form-row .form-group { flex: 1; margin-bottom: 0; }
 
 .transit-leg {
     background: #fff;
@@ -275,11 +164,7 @@ body.dark-mode .action-card:hover {
     gap: 10px;
     align-items: center;
 }
-
-.transit-leg input {
-    flex: 1;
-    margin-bottom: 0;
-}
+.transit-leg input { flex: 1; margin-bottom: 0; }
 
 .add-transit-btn {
     display: block;
@@ -293,25 +178,55 @@ body.dark-mode .action-card:hover {
     cursor: pointer;
     font-weight: 600;
 }
-
 .add-transit-btn:hover { background-color: #d6d8db; }
 
-/* Dark Mode Overrides for Itinerary */
-body.dark-mode .itinerary-builder {
-    background: #1e1e1e;
-    border-color: #444;
-}
-body.dark-mode .transit-leg {
-    background: #2a2a2a;
-    border-color: #555;
-}
-body.dark-mode .add-transit-btn {
-    background-color: #333;
-    color: #e0e0e0;
-    border-color: #555;
-}
-body.dark-mode .add-transit-btn:hover { background-color: #444; }
-
 @media (max-width: 600px) {
-    .form-row, .transit-leg { flex-direction: column; gap: 10px; }
+    .action-grid, .form-row, .transit-leg { flex-direction: column; gap: 10px; }
 }
+
+/* ==========================================
+   DARK MODE OVERRIDES
+   ========================================== */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode header { background-color: #1a365d; }
+
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #bbb;
+}
+
+body.dark-mode label { color: #6fb3ff; }
+
+/* Dark Mode Action Cards */
+body.dark-mode .action-card {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+body.dark-mode .action-card h3 { color: #6fb3ff; }
+body.dark-mode .action-card p { color: #aaa; }
+body.dark-mode .action-card:hover { border-color: #6fb3ff; background-color: #333; }
+
+/* Dark Mode Itinerary */
+body.dark-mode .itinerary-builder { background: #1e1e1e; border-color: #444; }
+body.dark-mode .transit-leg { background: #2a2a2a; border-color: #555; }
+body.dark-mode .add-transit-btn { background-color: #333; color: #e0e0e0; border-color: #555; }
+body.dark-mode .add-transit-btn:hover { background-color: #444; }

@@ -11,7 +11,6 @@ const firebaseConfig = {
     appId: "1:832399397945:web:18b0cbe07bc7663f90e9e8"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -57,14 +56,13 @@ function sendMagicLink(event) {
     auth.sendSignInLinkToEmail(email, actionCodeSettings)
         .then(() => {
             window.localStorage.setItem('emailForSignIn', email);
-            // Updated terminology here:
             alert('Secure link sent! Check your email inbox (and spam folder) to log in.');
             btn.innerText = "Check your email!";
         })
         .catch((error) => {
             console.error("Error sending link", error);
             alert("Oops! " + error.message);
-            btn.innerText = "Send Secure Link"; // Updated terminology
+            btn.innerText = "Send Secure Link";
             btn.disabled = false;
         });
 }
@@ -89,16 +87,9 @@ function checkLoginOnLoad() {
     }
 }
 
-window.onload = () => {
-    checkLoginOnLoad();
-    checkThemeOnLoad(); // Add this new line!
-};
-
 // ==========================================
 // 4. DATA ENTRY & DYNAMIC ITINERARY
 // ==========================================
-
-// Toggle to lock the arrival airline
 function toggleAirline() {
     const isChecked = document.getElementById('same-airline').checked;
     const arrAirlineInput = document.getElementById('arr-airline');
@@ -115,7 +106,6 @@ function toggleAirline() {
     }
 }
 
-// Spawn new transit legs
 let transitCount = 0;
 function addTransit() {
     transitCount++;
@@ -133,14 +123,12 @@ function addTransit() {
     container.appendChild(transitBlock);
 }
 
-// Submit to Firebase
 function submitEntryForm(event) {
     event.preventDefault(); 
     const submitBtn = event.target.querySelector('button[type="submit"]');
-    submitBtn.innerText = "Saving to Cloud...";
+    submitBtn.innerText = "Saving...";
     submitBtn.disabled = true;
 
-    // Gather all dynamic transit data into an array
     let transitsArray = [];
     document.querySelectorAll('.transit-leg').forEach(leg => {
         transitsArray.push({
@@ -153,13 +141,9 @@ function submitEntryForm(event) {
     db.collection("travelers").add({
         firstName: document.getElementById('entry-fname').value,
         surname: document.getElementById('entry-lname').value,
-        
-        // We keep Origin, Dest, and Date at the top level so Search works instantly!
         origin: document.getElementById('dep-city').value.toUpperCase(),
         dest: document.getElementById('arr-city').value.toUpperCase(),
         date: document.getElementById('entry-date').value,
-        
-        // The detailed itinerary object
         departure: {
             time: document.getElementById('dep-time').value,
             flight: document.getElementById('dep-flight').value,
@@ -170,8 +154,7 @@ function submitEntryForm(event) {
             flight: document.getElementById('arr-flight').value,
             airline: document.getElementById('arr-airline').value
         },
-        transits: transitsArray, // Saves our dynamic array
-
+        transits: transitsArray,
         intent: document.getElementById('entry-intent').value,
         comments: document.getElementById('entry-comments').value,
         flexibleDate: document.getElementById('entry-flex-date').checked,
@@ -180,16 +163,16 @@ function submitEntryForm(event) {
     .then(() => {
         alert("Success! Your detailed itinerary is securely saved.");
         event.target.reset();
-        document.getElementById('transit-container').innerHTML = ''; // Clear transits
+        document.getElementById('transit-container').innerHTML = ''; 
         transitCount = 0;
-        submitBtn.innerText = "Save to Cloud...";
+        submitBtn.innerText = "Save";
         submitBtn.disabled = false;
         goToPage('page-dashboard');
     })
     .catch((error) => {
         console.error("Error: ", error);
         alert("Oops! Check the console for errors.");
-        submitBtn.innerText = "Save to Cloud...";
+        submitBtn.innerText = "Save";
         submitBtn.disabled = false;
     });
 }
@@ -224,7 +207,7 @@ function performSearch(event) {
               if (diffDays <= bufferDays) {
                   matchesFound = true;
                   let dateMsg = diffDays === 0 ? "(Exact match!)" : `(${diffDays} day diff)`;
-                  let color = traveler.intent === "I can help" ? "green" : "#0056b3";
+                  let color = traveler.intent === "I can help someone" ? "green" : "#0056b3";
                   
                   resultsHTML += `
                       <div class="card trip-card" style="border-left: 5px solid ${color};">
@@ -232,9 +215,9 @@ function performSearch(event) {
                           <p><strong>Name:</strong> ${traveler.firstName} ${traveler.surname}</p>
                           <p><strong>Route:</strong> ${traveler.origin} ➔ ${traveler.dest}</p>
                           <p><strong>Date:</strong> ${traveler.date} <em>${dateMsg}</em></p>
-                          <p><strong>Airlines:</strong> ${traveler.airline}</p>
-                          <div style="background: #f1f3f5; padding: 10px; border-radius: 5px; margin: 10px 0;">
-                              <p style="margin: 0; font-size: 0.9em;"><strong>Notes:</strong> ${traveler.comments || "None"}</p>
+                          <p><strong>Primary Airline:</strong> ${traveler.departure.airline}</p>
+                          <div style="background: var(--bg-alt, #f1f3f5); padding: 10px; border-radius: 5px; margin: 10px 0;">
+                              <p style="margin: 0; font-size: 0.9em; color: var(--text-dark, #333);"><strong>Notes:</strong> ${traveler.comments || "None"}</p>
                           </div>
                           <button class="btn-primary" onclick="alert('Connection request coming soon!')">Request to Connect</button>
                       </div>
@@ -252,10 +235,8 @@ function toggleTheme() {
     const body = document.body;
     const themeBtn = document.getElementById('theme-toggle');
     
-    // Toggle the class on or off
     body.classList.toggle('dark-mode');
     
-    // Update the button text and save to local storage
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
         themeBtn.innerText = "☀️ Light Mode";
@@ -269,9 +250,16 @@ function checkThemeOnLoad() {
     const savedTheme = localStorage.getItem('theme');
     const themeBtn = document.getElementById('theme-toggle');
     
-    // If they previously chose dark mode, apply it immediately
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         if(themeBtn) themeBtn.innerText = "☀️ Light Mode";
     }
 }
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+window.onload = () => {
+    checkLoginOnLoad();
+    checkThemeOnLoad();
+};
