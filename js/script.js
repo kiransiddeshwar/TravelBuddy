@@ -115,7 +115,7 @@ function addTransit() {
     transitBlock.classList.add('transit-leg');
     transitBlock.innerHTML = `
         <span style="font-weight: bold; min-width: 80px;">Transit ${transitCount}:</span>
-        <input type="text" placeholder="City Code (e.g., DXB)" class="t-city">
+        <input type="text" placeholder="City (e.g., Dubai)" class="t-city">
         <input type="text" placeholder="Flight Code" class="t-flight">
         <input type="text" placeholder="Airline" class="t-airline">
         <button type="button" style="background:#dc3545; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;" onclick="this.parentElement.remove()">X</button>
@@ -202,7 +202,8 @@ function performSearch(event) {
               let travelerDate = new Date(traveler.date);
               let diffDays = Math.ceil(Math.abs(travelerDate - searchDate) / (1000 * 3600 * 24));
 
-              let bufferDays = traveler.flexibleDate ? 3 : 1; 
+              // UPDATED LOGIC: +/- 15 days if flexible
+              let bufferDays = traveler.flexibleDate ? 15 : 1; 
 
               if (diffDays <= bufferDays) {
                   matchesFound = true;

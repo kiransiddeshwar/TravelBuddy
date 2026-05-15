@@ -17,7 +17,7 @@
 <body>
 
 <header>
-    <img src="img/logo.png" alt="Travel Buddy Logo" class="logo">
+    <img src="images/logo.png" alt="Travel Buddy Logo" class="logo">
     <div class="header-text">
         <h1>Travel Buddy</h1>
         <p>Supporting our Indian globe-trotters</p>
@@ -83,11 +83,11 @@
                     <h4 style="margin-top: 0;">Flight Itinerary</h4>
                     
                     <div class="form-row">
-                        <div class="form-group"><label>Dep. City (Code):</label><input type="text" id="dep-city" required placeholder="e.g., BOM"></div>
+                        <div class="form-group"><label>Departure City:</label><input type="text" id="dep-city" required placeholder="e.g., Mumbai"></div>
                         <div class="form-group"><label>Date:</label><input type="date" id="entry-date" required></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group"><label>Dep. Time:</label><input type="time" id="dep-time"></div>
+                        <div class="form-group"><label>Departure Time:</label><input type="time" id="dep-time"></div>
                         <div class="form-group"><label>Flight Code:</label><input type="text" id="dep-flight" placeholder="e.g., AI 101"></div>
                         <div class="form-group"><label>Airline:</label><input type="text" id="dep-airline" required placeholder="e.g., Air India"></div>
                     </div>
@@ -96,8 +96,8 @@
                     <button type="button" class="add-transit-btn" onclick="addTransit()">+ Add Transit Leg</button>
 
                     <div class="form-row" style="margin-top: 15px;">
-                        <div class="form-group"><label>Arr. City (Code):</label><input type="text" id="arr-city" required placeholder="e.g., LHR"></div>
-                        <div class="form-group"><label>Arr. Time:</label><input type="time" id="arr-time"></div>
+                        <div class="form-group"><label>Arrival City:</label><input type="text" id="arr-city" required placeholder="e.g., London"></div>
+                        <div class="form-group"><label>Arrival Time:</label><input type="time" id="arr-time"></div>
                     </div>
                     <div class="form-row">
                         <div class="form-group"><label>Flight Code:</label><input type="text" id="arr-flight" placeholder="e.g., BA 123"></div>
@@ -116,7 +116,6 @@
                     <select id="entry-intent">
                         <option>I can help someone</option>
                         <option>I need assistance</option>
-                        <option>Just looking for company</option>
                     </select>
                 </div>
 
@@ -127,7 +126,7 @@
 
                 <div class="form-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="entry-flex-date"> My travel dates are flexible (+/- 3 days)
+                        <input type="checkbox" id="entry-flex-date"> My travel dates are flexible (+/- 15 days)
                     </label>
                 </div>
                 
@@ -142,8 +141,8 @@
             
             <form id="search-form" onsubmit="performSearch(event)">
                 <div class="form-row">
-                    <div class="form-group"><label>From (Code):</label><input type="text" id="search-origin" required placeholder="e.g., BOM"></div>
-                    <div class="form-group"><label>To (Code):</label><input type="text" id="search-dest" required placeholder="e.g., LHR"></div>
+                    <div class="form-group"><label>Departure City:</label><input type="text" id="search-origin" required placeholder="e.g., Mumbai"></div>
+                    <div class="form-group"><label>Arrival City:</label><input type="text" id="search-dest" required placeholder="e.g., London"></div>
                     <div class="form-group"><label>Travel Date:</label><input type="date" id="search-date" required></div>
                 </div>
                 <button type="submit" class="btn-primary">Search Database</button>
