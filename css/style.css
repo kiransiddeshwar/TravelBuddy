@@ -169,16 +169,25 @@ button { font-family: inherit; }
 .add-transit-btn {
     display: block;
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
+    
+    /* THE FIX: Added generous top and bottom margins for breathing room */
+    margin-top: 25px; 
+    margin-bottom: 25px; 
+    
+    padding: 12px; /* Made the button slightly taller for better UX */
+    
     background-color: #e2e6ea;
     color: #495057;
     border: 1px dashed #6c757d;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.2s ease;
 }
-.add-transit-btn:hover { background-color: #d6d8db; }
+
+.add-transit-btn:hover { 
+    background-color: #d6d8db; 
+}
 
 @media (max-width: 600px) {
     .action-grid, .form-row, .transit-leg { flex-direction: column; gap: 10px; }
