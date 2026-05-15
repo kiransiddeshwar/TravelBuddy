@@ -38,54 +38,39 @@ function goToPage(pageId) {
 }
 
 // ==========================================
-// 3. SECURE LINK AUTHENTICATION LOGIC
+// 3. GOOGLE AUTHENTICATION LOGIC
 // ==========================================
-function sendMagicLink(event) {
-    event.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const btn = document.getElementById('login-btn');
-    
-    btn.innerText = "Sending...";
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+function signInWithGoogle() {
+    const btn = document.getElementById('google-login-btn');
+    btn.innerText = "Signing in...";
     btn.disabled = true;
 
-    const actionCodeSettings = {
-        url: 'https://kiransiddeshwar.github.io/TravelBuddy/', 
-        handleCodeInApp: true,
-    };
-
-    auth.sendSignInLinkToEmail(email, actionCodeSettings)
-        .then(() => {
-            window.localStorage.setItem('emailForSignIn', email);
-            alert('Secure link sent! Check your email inbox (and spam folder) to log in.');
-            btn.innerText = "Check your email!";
+    auth.signInWithPopup(googleProvider)
+        .then((result) => {
+            btn.innerText = "Sign in with Google";
+            btn.disabled = false;
+            // The onAuthStateChanged listener below will handle the redirect
         })
         .catch((error) => {
-            console.error("Error sending link", error);
+            console.error("Error signing in", error);
             alert("Oops! " + error.message);
-            btn.innerText = "Send Secure Link";
+            btn.innerText = "Sign in with Google";
             btn.disabled = false;
         });
 }
 
-function checkLoginOnLoad() {
-    if (auth.isSignInWithEmailLink(window.location.href)) {
-        let email = window.localStorage.getItem('emailForSignIn');
-        if (!email) {
-            email = window.prompt('Please confirm your email address to complete sign-in:');
-        }
-        
-        auth.signInWithEmailLink(email, window.location.href)
-            .then((result) => {
-                window.localStorage.removeItem('emailForSignIn'); 
-                alert("Successfully logged in!");
-                goToPage('page-dashboard');
-            })
-            .catch((error) => {
-                console.error("Error signing in", error);
-                alert("Error logging in. The link might have expired. Please try again.");
-            });
+// Automatically listen for login/logout changes
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // User is logged in, send them straight to the Hub
+        goToPage('page-dashboard');
+    } else {
+        // User is logged out, show the login screen
+        goToPage('page-login');
     }
-}
+});
 
 // ==========================================
 // 4. DATA ENTRY & DYNAMIC ITINERARY
@@ -202,7 +187,6 @@ function performSearch(event) {
               let travelerDate = new Date(traveler.date);
               let diffDays = Math.ceil(Math.abs(travelerDate - searchDate) / (1000 * 3600 * 24));
 
-              // UPDATED LOGIC: +/- 15 days if flexible
               let bufferDays = traveler.flexibleDate ? 15 : 1; 
 
               if (diffDays <= bufferDays) {
@@ -261,6 +245,6 @@ function checkThemeOnLoad() {
 // INITIALIZATION
 // ==========================================
 window.onload = () => {
-    checkLoginOnLoad();
     checkThemeOnLoad();
+    // checkLoginOnLoad() is removed because onAuthStateChanged handles it automatically now!
 };
